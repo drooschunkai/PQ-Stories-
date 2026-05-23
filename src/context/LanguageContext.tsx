@@ -1,0 +1,235 @@
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { Language } from '../types';
+
+interface LanguageContextProps {
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  t: (key: string) => string;
+  isRtl: boolean;
+}
+
+const translations: Record<Language, Record<string, string>> = {
+  en: {
+    app_title: "Quranic Stories",
+    app_subtitle: "The Complete Prophet Collection for Children",
+    all_prophets: "All Prophets",
+    favorites: "My Favorites",
+    completed: "Read / Completed",
+    quick_quiz: "Interactive Quiz",
+    story_counter: "Story {current} of {total}",
+    moral_lessons: "Moral Lessons for Us",
+    reflection_questions: "Let's Reflect & Tell!",
+    original_dua: "Beautiful Supplication (Dua)",
+    mark_completed: "Mark as Completed",
+    completed_badge: "Completed",
+    add_favorite: "Add to Favorites",
+    remove_favorite: "Remove Favorite",
+    next_story: "Next Prophet",
+    prev_story: "Previous Prophet",
+    play_audio: "Listen to Story (Voice)",
+    pause_audio: "Pause Voice",
+    stop_audio: "Stop Voice",
+    voice_speed: "Speed",
+    read_more: "Read Story",
+    search_placeholder: "Search prophet by name...",
+    your_progress: "Your Noble Progress",
+    stories_completed: "Stories Completed",
+    completion_rate: "Completion Rate",
+    favorites_count: "Favorite Stories",
+    no_favorites: "No favorites added yet! Tap the heart button on any story to save a favorite.",
+    no_completed: "No stories completed yet! Read stories and click 'Mark as Completed' to track your learning journey.",
+    moral_badge: "Lesson",
+    dua_transliteration: "Transliteration",
+    dua_translation: "Meaning",
+    parent_guide: "Parent & Teacher Guide",
+    parent_guide_sub: "Educational tips & activities",
+    quiz_title: "Prophets Knowledge Quiz",
+    quiz_intro: "Match your knowledge against Islamic history! Tap the correct answer below.",
+    quiz_score: "Score",
+    quiz_correct: "Alhamdulillah! Correct!",
+    quiz_wrong: "Try again! Read the story to find the answer.",
+    quiz_reset: "Restart Quiz",
+    quiz_congrats: "Masha'Allah! You answered all questions correctly!",
+    audio_unsupported: "Text-to-speech option is not fully supported in this browser, but you can read along!",
+    arabic_spelling: "Arabic Name",
+    prophet_title: "Title / Honorific",
+    back_to_stories: "Back to All Stories"
+  },
+  ar: {
+    app_title: "قصص الأنبياء للأطفال",
+    app_subtitle: "المجموعة الكاملة لقصص الأنبياء من القرآن الكريم",
+    all_prophets: "جميع الأنبياء",
+    favorites: "قصصي المفضلة",
+    completed: "القصص المقروءة",
+    quick_quiz: "مسابقة تفاعلية",
+    story_counter: "القصة {current} من {total}",
+    moral_lessons: "الدروس المستفادة والعبر",
+    reflection_questions: "لنتأمل ونتحدث معاً!",
+    original_dua: "الدعاء المبارك للمرسل",
+    mark_completed: "تمت القراءة بنجاح",
+    completed_badge: "مكتمل",
+    add_favorite: "إضافة للمفضلة",
+    remove_favorite: "حذف من المفضلة",
+    next_story: "النبي التالي",
+    prev_story: "النبي السابق",
+    play_audio: "استمع للقصة (صوت)",
+    pause_audio: "إيقاف مؤقت للقصة",
+    stop_audio: "إيقاف الصوت",
+    voice_speed: "سرعة الصوت",
+    read_more: "اقرأ القصة",
+    search_placeholder: "ابحث عن النبي بالاسم...",
+    your_progress: "مستوى تقدمك المبارك",
+    stories_completed: "القصص المنجزة",
+    completion_rate: "نسبة الإنجاز",
+    favorites_count: "القصص المفضلة",
+    no_favorites: "لم تقم بإضافة قصص للمفضلة بعد! انقر على رمز القلب في أي قصة لحفظها.",
+    no_completed: "لم تقرأ أي قصة بعد! اقرأ القصص وانقر على زر 'تمت القراءة' لتسجيل تقدمك في رحلة التعلم.",
+    moral_badge: "العظة",
+    dua_transliteration: "طريقة النطق باللاتينية",
+    dua_translation: "معنى الدعاء",
+    parent_guide: "دليل الآباء والمعلمين",
+    parent_guide_sub: "إرشادات تعليمية وأنشطة للأطفال",
+    quiz_title: "مسابقة معلومات الأنبياء",
+    quiz_intro: "اختبر معلوماتك من قصص القرآن العظيم! انقر على الإجابة الصحيحة.",
+    quiz_score: "النقاط",
+    quiz_correct: "الحمد لله! إجابة صحيحة!",
+    quiz_wrong: "حاول مجدداً! اقرأ القصة جيداً لتجد الإجابة الصحيحة.",
+    quiz_reset: "إعادة المسابقة",
+    quiz_congrats: "ما شاء الله! لقد أجبت على جميع الأسئلة بشكل صحيح!",
+    audio_unsupported: "ميزة قراءة الصوت غير مدعومة بالكامل في هذا المتصفح، ولكن يمكنك مواصلة القراءة بكل يسر!",
+    arabic_spelling: "الاسم بالعربية",
+    prophet_title: "اللقب",
+    back_to_stories: "العودة لجميع القصص"
+  },
+  sv: {
+    app_title: "Profetberättelser",
+    app_subtitle: "Den kompletta samlingen om profeterna i Koranen",
+    all_prophets: "Alla profeter",
+    favorites: "Mina favoriter",
+    completed: "Läst / Slutfört",
+    quick_quiz: "Interaktivt quiz",
+    story_counter: "Berättelse {current} av {total}",
+    moral_lessons: "Moraliska lärdomar för oss",
+    reflection_questions: "Låt oss reflektera och berätta!",
+    original_dua: "Vacker bön (Dua)",
+    mark_completed: "Markera som läst",
+    completed_badge: "Slutförd",
+    add_favorite: "Lägg till i favoriter",
+    remove_favorite: "Ta bort favorit",
+    next_story: "Nästa profet",
+    prev_story: "Föregående profet",
+    play_audio: "Lyssna på berättelsen (Röst)",
+    pause_audio: "Pausa röst",
+    stop_audio: "Stoppa röst",
+    voice_speed: "Hastighet",
+    read_more: "Läs berättelsen",
+    search_placeholder: "Sök profet efter namn...",
+    your_progress: "Dina fina framsteg",
+    stories_completed: "Slutförda berättelser",
+    completion_rate: "Procent slutförda",
+    favorites_count: "Favoritberättelser",
+    no_favorites: "Inga favoriter tillagda än! Tryck på hjärtat på valfri berättelse för att spara en favorit.",
+    no_completed: "Inga berättelser lästa än! Läs berättelser och klicka på 'Markera som läst' för att följa dina framsteg.",
+    moral_badge: "Lärdom",
+    dua_transliteration: "Transkription",
+    dua_translation: "Betydelse",
+    parent_guide: "Föräldra- & lärarguide",
+    parent_guide_sub: "Pedagogiska tips och hemma-aktiviteter",
+    quiz_title: "Profeternas kunskapsquiz",
+    quiz_intro: "Testa dina kunskaper om islamisk historia! Klicka på rätt svar nedan.",
+    quiz_score: "Poäng",
+    quiz_correct: "Alhamdulillah! Rätt svar!",
+    quiz_wrong: "Försök igen! Läs berättelsen för att hitta svaret.",
+    quiz_reset: "Starta om quiz",
+    quiz_congrats: "Masha'Allah! Du svarade rätt på alla frågor!",
+    audio_unsupported: "Text-till-tal stöds inte fullt ut i denna webbläsare, men du kan följa med genom att läsa!",
+    arabic_spelling: "Arabiskt namn",
+    prophet_title: "Titel / Hedersnamn",
+    back_to_stories: "Tillbaka till alla berättelser"
+  },
+  de: {
+    app_title: "Prophetengeschichten",
+    app_subtitle: "Die komplette Sammlung der Propheten des Korans für Kinder",
+    all_prophets: "Alle Propheten",
+    favorites: "Meine Favoriten",
+    completed: "Gelesen / Beendet",
+    quick_quiz: "Interaktives Quiz",
+    story_counter: "Geschichte {current} von {total}",
+    moral_lessons: "Moralische Lektionen für uns",
+    reflection_questions: "Lass uns nachdenken & erzählen!",
+    original_dua: "Wunderschönes Bittgebet (Dua)",
+    mark_completed: "Als gelesen markieren",
+    completed_badge: "Gelesen",
+    add_favorite: "Zu Favoriten hinzufügen",
+    remove_favorite: "Aus Favoriten entfernen",
+    next_story: "Nächster Prophet",
+    prev_story: "Vorheriger Prophet",
+    play_audio: "Geschichte anhören (Stimme)",
+    pause_audio: "Stimme pausieren",
+    stop_audio: "Stimme stoppen",
+    voice_speed: "Geschwindigkeit",
+    read_more: "Geschichte lesen",
+    search_placeholder: "Suche Prophet nach Namen...",
+    your_progress: "Dein edler Fortschritt",
+    stories_completed: "Gelesene Geschichten",
+    completion_rate: "Fortschrittsrate",
+    favorites_count: "Lieblingsgeschichten",
+    no_favorites: "Noch keine Favoriten hinzugefügt! Klicke auf das Herz auf einer Geschichte, um sie zu speichern.",
+    no_completed: "Noch keine Geschichten gelesen! Lies die Geschichten und klicke auf 'Als gelesen markieren' für das Fortschritts-Tracking.",
+    moral_badge: "Lektion",
+    dua_transliteration: "Transliteration",
+    dua_translation: "Bedeutung",
+    parent_guide: "Anleitung für Eltern & Lehrer",
+    parent_guide_sub: "Pädagogische Tipps & Aktivitäten",
+    quiz_title: "Das Propheten-Quiz",
+    quiz_intro: "Teste dein Wissen über die Propheten! Tippe auf die richtige Antwort.",
+    quiz_score: "Punkte",
+    quiz_correct: "Alhamdulillah! Richtig!",
+    quiz_wrong: "Versuch es nochmal! Lies die Geschichte, um die Antwort zu finden.",
+    quiz_reset: "Quiz neu starten",
+    quiz_congrats: "Masha'Allah! Du hast alle Fragen richtig beantwortet!",
+    audio_unsupported: "Text-zu-Sprache wird von diesem Browser nicht vollständig unterstützt, aber du kannst prima mitlesen!",
+    arabic_spelling: "Arabischer Name",
+    prophet_title: "Ehrentitel",
+    back_to_stories: "Zurück zu allen Geschichten"
+  }
+};
+
+const LanguageContext = createContext<LanguageContextProps | undefined>(undefined);
+
+export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [language, setLanguageState] = useState<Language>(() => {
+    const saved = localStorage.getItem('selectedLanguage');
+    return (saved as Language) || 'en';
+  });
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    localStorage.setItem('selectedLanguage', lang);
+  };
+
+  const t = (key: string): string => {
+    return translations[language][key] || translations['en'][key] || key;
+  };
+
+  const isRtl = language === 'ar';
+
+  useEffect(() => {
+    document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+    document.documentElement.lang = language;
+  }, [language, isRtl]);
+
+  return (
+    <LanguageContext.Provider value={{ language, setLanguage, t, isRtl }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
+
+export const useLanguage = () => {
+  const context = useContext(LanguageContext);
+  if (!context) {
+    throw new Error('useLanguage must be used within a LanguageProvider');
+  }
+  return context;
+};

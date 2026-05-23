@@ -1,0 +1,6 @@
+{
+  "name": "Islamic Children's Stories",
+  "description": "A beautiful, multilingual storybook application of the 25 Prophets from the Quran with voice narration, reflection questions, moral lessons, and progress tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
