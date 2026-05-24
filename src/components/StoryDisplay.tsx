@@ -3,6 +3,7 @@ import { useAppContext } from '../context/AppContext';
 import { useLanguage } from '../context/LanguageContext';
 import { prophets, getAdjacentProphets } from '../data/prophets';
 import { AudioPlayer } from './AudioPlayer';
+import { LanguageSelector } from './LanguageSelector';
 import { motion, AnimatePresence } from 'motion/react';
 import * as LucideIcons from 'lucide-react';
 import { 
@@ -78,14 +79,17 @@ export const StoryDisplay: React.FC = () => {
       >
         {/* Navigation Toolbar & Core Menu */}
         <div className="flex items-center justify-between mb-5 flex-wrap gap-3" id="story-header-nav-toolbar">
-          <button
-            onClick={() => navigateTo(null)}
-            className="flex items-center gap-1.5 text-sm font-semibold text-emerald-800 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100/80 px-4 py-2 rounded-full transition-all cursor-pointer"
-            id="back-home-button"
-          >
-            <ArrowLeft size={16} className={isRtl ? "rotate-180" : ""} />
-            <span>{t('back_to_stories')}</span>
-          </button>
+          <div className="flex items-center gap-2 flex-wrap" id="story-back-selectors-group">
+            <button
+              onClick={() => navigateTo(null)}
+              className="flex items-center gap-1.5 text-sm font-semibold text-emerald-800 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100/80 px-4 py-2 rounded-full transition-all cursor-pointer"
+              id="back-home-button"
+            >
+              <ArrowLeft size={16} className={isRtl ? "rotate-180" : ""} />
+              <span>{t('back_to_stories')}</span>
+            </button>
+            <LanguageSelector />
+          </div>
 
           <div className="flex items-center gap-2" id="story-quick-action-favorites">
             {/* Click to Toggle Favorite */}
@@ -184,7 +188,7 @@ export const StoryDisplay: React.FC = () => {
               {prophet.id}
             </div>
 
-            <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10 ${isRtl ? 'flex-row-reverse text-right' : 'flex-row text-left'}`} id="hero-names-layout">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10 text-start" id="hero-names-layout">
               <div className="flex items-center gap-4">
                 <div className="h-16 w-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-white text-3xl shadow-sm" id="prophet-avatar-box">
                   {renderProphetIcon(prophet.iconName, "h-8 w-8")}
@@ -203,7 +207,7 @@ export const StoryDisplay: React.FC = () => {
               </div>
 
               {/* Calligraphy spelling column */}
-              <div className="text-center sm:text-right flex flex-col justify-center" id="arabic-spelling-pillar">
+              <div className="text-center sm:text-end flex flex-col justify-center" id="arabic-spelling-pillar">
                 <span className="text-xs text-white/70 font-sans block">{t('arabic_spelling')}</span>
                 <span className="text-2xl md:text-3xl font-bold block filter drop-shadow-sm font-sans tracking-wide" id="arabicName-view">
                   {prophet.arabicName}
@@ -241,7 +245,7 @@ export const StoryDisplay: React.FC = () => {
             <div className="absolute top-0 right-0 p-4 text-amber-200/30">
               <Lightbulb size={40} />
             </div>
-            <div className={`flex items-center gap-2 mb-3.5 ${isRtl ? 'flex-row-reverse' : 'flex-row'}`} id="moral-lessons-title-bar">
+            <div className="flex items-center gap-2 mb-3.5" id="moral-lessons-title-bar">
               <span className="bg-amber-100 p-2 rounded-xl text-amber-700">
                 <Sparkles size={18} />
               </span>
@@ -251,7 +255,7 @@ export const StoryDisplay: React.FC = () => {
             </div>
             <ul className="space-y-3.5" id="moral-lessons-list">
               {storyData.lessons.map((lesson, index) => (
-                <li key={index} className={`flex items-start gap-2.5 text-amber-900 text-sm md:text-base leading-relaxed ${isRtl ? 'flex-row-reverse text-right' : 'text-left'}`} id={`moral-item-${index}`}>
+                <li key={index} className="flex items-start gap-2.5 text-amber-900 text-sm md:text-base leading-relaxed text-start" id={`moral-item-${index}`}>
                   <span className="h-5 w-5 rounded-full bg-amber-200 text-amber-800 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5" id={`moral-badge-${index}`}>
                     {index + 1}
                   </span>
@@ -266,7 +270,7 @@ export const StoryDisplay: React.FC = () => {
             <div className="absolute top-0 right-0 p-4 text-sky-200/30">
               <HelpCircle size={40} />
             </div>
-            <div className={`flex items-center gap-2 mb-3.5 ${isRtl ? 'flex-row-reverse' : 'flex-row'}`} id="reflection-title-bar">
+            <div className="flex items-center gap-2 mb-3.5" id="reflection-title-bar">
               <span className="bg-sky-100 p-2 rounded-xl text-sky-700">
                 <HelpCircle size={18} />
               </span>
@@ -276,7 +280,7 @@ export const StoryDisplay: React.FC = () => {
             </div>
             <ul className="space-y-3.5" id="reflection-questions-list">
               {storyData.reflectionQuestions.map((q, qindex) => (
-                <li key={qindex} className={`flex items-start gap-2.5 text-sky-900 text-sm md:text-base leading-relaxed ${isRtl ? 'flex-row-reverse text-right' : 'text-left'}`} id={`ref-item-${qindex}`}>
+                <li key={qindex} className="flex items-start gap-2.5 text-sky-900 text-sm md:text-base leading-relaxed text-start" id={`ref-item-${qindex}`}>
                   <span className="h-5 w-5 rounded-full bg-sky-200 text-sky-800 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5" id={`ref-badge-${qindex}`}>
                     ?
                   </span>

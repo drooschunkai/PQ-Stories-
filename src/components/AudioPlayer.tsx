@@ -128,7 +128,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ title, introduction, p
   }
 
   return (
-    <div className={`p-4 bg-emerald-50/65 rounded-xl border border-emerald-100/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs select-none ${isRtl ? 'text-right' : 'text-left'}`} id="audio-player-panel">
+    <div className="p-4 bg-emerald-50/65 rounded-xl border border-emerald-100/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs select-none text-start" id="audio-player-panel">
       <div className="flex items-center gap-3">
         <div className="h-10 w-10 rounded-full bg-emerald-600/10 flex items-center justify-center text-emerald-700 animate-pulse">
           <Volume2 size={20} id="volume-mic-icon" />

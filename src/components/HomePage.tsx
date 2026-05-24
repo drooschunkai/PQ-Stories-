@@ -242,7 +242,7 @@ export const HomePage: React.FC = () => {
     <div className="w-full max-w-7xl mx-auto p-4 md:p-6" id="home-view-container">
       {/* APP TITLE HEADER */}
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-150 pb-6 mb-6" id="app-landing-header">
-        <div className={`flex items-center gap-3.5 ${isRtl ? 'flex-row-reverse text-right' : 'text-left'}`} id="app-title-card">
+        <div className="flex items-center gap-3.5 text-start" id="app-title-card">
           <div className="h-12 w-12 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-md animate-spin-slow">
             <Star size={24} fill="currentColor" id="spinning-star-graphic" />
           </div>
@@ -268,8 +268,8 @@ export const HomePage: React.FC = () => {
         <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-white/5 pointer-events-none select-none" />
         <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-white/5 pointer-events-none select-none" />
 
-        <div className={`flex flex-col md:flex-row md:items-center md:justify-between gap-6 relative z-10 ${isRtl ? 'md:flex-row-reverse' : ''}`} id="dashboard-metric-layout">
-          <div className={`space-y-2 ${isRtl ? 'text-right' : 'text-left'}`}>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 relative z-10 text-start" id="dashboard-metric-layout">
+          <div className="space-y-2 text-start">
             <span className="bg-white/10 px-3 py-1 rounded-full text-xs font-bold font-mono tracking-wider uppercase inline-flex items-center gap-1.5 text-emerald-200">
               <Award size={12} fill="currentColor" /> {t('your_progress')}
             </span>
@@ -313,9 +313,9 @@ export const HomePage: React.FC = () => {
 
         {/* Visual Progress Bar track */}
         <div className="mt-5 pt-3 border-t border-white/10 relative z-10" id="visual-progress-meter">
-          <div className={`flex justify-between items-center text-xs text-emerald-200 mb-1.5 ${isRtl ? 'flex-row-reverse' : 'flex-row'}`}>
-            <span>{completed.length} of 25 Books Unlocked</span>
-            <span>{completionPercentage}% Completed</span>
+          <div className="flex justify-between items-center text-xs text-emerald-200 mb-1.5" id="progress-text-bar">
+            <span>{t('books_unlocked_of').replace('{completed}', completed.length.toString()).replace('{total}', '25')}</span>
+            <span>{completionPercentage}% {t('completed_badge')}</span>
           </div>
           <div className="h-2.5 w-full bg-emerald-950/70 rounded-full overflow-hidden">
             <motion.div 
@@ -332,7 +332,7 @@ export const HomePage: React.FC = () => {
       <section className="space-y-4 mb-6" id="search-filter-tabs-layout">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4" id="controls-panel">
           {/* Tabs bar */}
-          <div className={`flex flex-wrap items-center gap-1.5 p-1 bg-gray-100 border border-gray-150 rounded-2xl shadow-3xs ${isRtl ? 'flex-row-reverse justify-center' : 'flex-row text-left'}`} id="menu-tabs">
+          <div className="flex flex-wrap items-center gap-1.5 p-1 bg-gray-100 border border-gray-150 rounded-2xl shadow-3xs text-start sm:justify-start justify-center" id="menu-tabs">
             <button
               id="tab-all"
               onClick={() => { setActiveTab('all'); setSearchQuery(''); }}
@@ -510,7 +510,7 @@ export const HomePage: React.FC = () => {
                     {t('quiz_congrats')}
                   </h3>
                   <p className="text-sm text-gray-500 mt-2">
-                    Congratulations! You scored <strong className="text-emerald-600 font-mono text-lg">{quizScore} / {quizQuestions.length}</strong> correct answers.
+                    {t('quiz_result_msg').replace('{score}', quizScore.toString()).replace('{total}', quizQuestions.length.toString())}
                   </p>
                 </div>
                 <div className="flex justify-center gap-3">
@@ -527,7 +527,7 @@ export const HomePage: React.FC = () => {
                     id="return-all-stories-btn"
                     className="px-6 py-2.5 bg-gray-150 hover:bg-gray-200 text-gray-700 font-semibold rounded-full cursor-pointer"
                   >
-                    Back to Collection
+                    {t('back_to_collection')}
                   </button>
                 </div>
               </motion.div>
@@ -543,7 +543,7 @@ export const HomePage: React.FC = () => {
             className="w-full max-w-3xl mx-auto bg-white border border-gray-150 rounded-3xl p-6 md:p-8 shadow-sm space-y-6"
             id="parent-instructional-guide"
           >
-            <div className={`flex items-start gap-4 ${isRtl ? 'flex-row-reverse text-right' : 'text-left'}`} id="guide-intro">
+            <div className="flex items-start gap-4 text-start" id="guide-intro">
               <span className="bg-emerald-50 p-3 rounded-2xl text-emerald-604 shrink-0 mt-1">
                 <Info size={30} />
               </span>
@@ -561,50 +561,54 @@ export const HomePage: React.FC = () => {
 
             <div className={`space-y-5 text-gray-850 font-sans text-sm md:text-base leading-relaxed ${isRtl ? 'text-right' : 'text-left'}`} id="guide-paragraphs">
               <div>
-                <h3 className="font-extrabold text-slate-900 text-sm md:text-md mb-1 bg-emerald-50/40 p-2 rounded-lg">
-                  1. 📖 How to read these stories together
+                <h3 className="font-extrabold text-slate-900 text-sm md:text-md mb-1 bg-emerald-50/40 p-2 rounded-lg text-start">
+                  {t('guide_title_1')}
                 </h3>
-                <p className="pl-2">
-                  To get the absolute best out of this complete Quranic collection, read one story per night before sleep together with your children. Let them select their preferred Prophet and admire their unique visual icons (e.g., the beautiful blue Ark of Noah or the golden crown of Sulayman).
+                <p className="pl-2 pr-2 text-start">
+                  {t('guide_desc_1')}
                 </p>
               </div>
 
               <div>
-                <h3 className="font-extrabold text-slate-900 text-sm md:text-md mb-1 bg-emerald-50/40 p-2 rounded-lg">
-                  2. 🗣️ The Reflection Questions Panel
+                <h3 className="font-extrabold text-slate-900 text-sm md:text-md mb-1 bg-emerald-50/40 p-2 rounded-lg text-start">
+                  {t('guide_title_2')}
                 </h3>
-                <p className="pl-2">
-                  At the end of each narrative, we've designed interactive kids-parent questions. Spend 5 minutes discussing: "How would you show patient smiles like Hazrat Ayyub?" or "How can we share toys fairly like Prophet Salih shared water?". This builds critical thinking and core Islamic manners (Akhlaq).
+                <p className="pl-2 pr-2 text-start">
+                  {t('guide_desc_2')}
                 </p>
               </div>
 
               <div>
-                <h3 className="font-extrabold text-slate-900 text-sm md:text-md mb-1 bg-emerald-50/40 p-2 rounded-lg">
-                  3. 🧠 Real-time Progress Tracking
+                <h3 className="font-extrabold text-slate-900 text-sm md:text-md mb-1 bg-emerald-50/40 p-2 rounded-lg text-start">
+                  {t('guide_title_3')}
                 </h3>
-                <p className="pl-2">
-                  Reward children for unlocking books! Each time they read, encourage them to tap the green "Mark as Completed" button. Watch the Progress Indicator and percentage rise in the home dashboard. There's also the interactive matching Quiz to test their knowledge.
+                <p className="pl-2 pr-2 text-start">
+                  {t('guide_desc_3')}
                 </p>
               </div>
 
               <div>
-                <h3 className="font-extrabold text-slate-900 text-sm md:text-md mb-1 bg-emerald-50/40 p-2 rounded-lg">
-                  4. ⚙️ Total Privacy & Offline Readiness
+                <h3 className="font-extrabold text-slate-900 text-sm md:text-md mb-1 bg-emerald-50/40 p-2 rounded-lg text-start">
+                  {t('guide_title_4')}
                 </h3>
-                <p className="pl-2">
-                  This application is built 100% offline-first and privacy-focused. No personal statistics or names are collected or transmitted. All favorite bookmarks and unlocked stories are kept safely in your local device's browser memory (LocalStorage).
+                <p className="pl-2 pr-2 text-start">
+                  {t('guide_desc_4')}
                 </p>
               </div>
             </div>
 
             <div className="flex justify-end pt-4" id="guide-bottom-toolbar">
               <button
-                onClick={() => resetProgress()}
+                onClick={() => {
+                  if (confirm(isRtl ? "هل أنت متأكد من إعادة ضبط كل التقدم والبيانات؟" : "Are you sure you want to reset all progress and bookmark data?")) {
+                    resetProgress();
+                  }
+                }}
                 id="reset-whole-app-btn"
                 className="flex items-center gap-1 px-4 py-2 text-xs font-bold text-rose-600 hover:text-white bg-rose-50 hover:bg-rose-600 border border-rose-100 hover:border-rose-600 rounded-full cursor-pointer transition-all"
               >
                 <Trash2 size={13} />
-                <span>Reset All Learned Data / Progress</span>
+                <span>{t('reset_all_data')}</span>
               </button>
             </div>
           </motion.div>
@@ -660,7 +664,7 @@ export const HomePage: React.FC = () => {
                           </div>
 
                           {/* Beautiful Avatar Image/Icon and Multi-language Names */}
-                          <div className={`flex items-center gap-3 ${isRtl ? 'flex-row-reverse text-right' : 'text-left'}`} id="avatar-and-names">
+                          <div className="flex items-center gap-3 text-start" id="avatar-and-names">
                             <div className={`h-11 w-11 rounded-xl flex items-center justify-center text-lg shadow-2xs bg-emerald-50 text-emerald-700`} id={`icon-box-${p.id}`}>
                               {renderProphetThemeIcon(p.iconName, "h-5 w-5")}
                             </div>
